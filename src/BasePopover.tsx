@@ -413,6 +413,8 @@ export default class BasePopover extends Component<BasePopoverProps, BasePopover
       shadowOpacity,
       shadowRadius,
       elevation,
+      borderColor,
+      borderWidth,
       ...otherPopoverStyles
     } = flattenedPopoverStyle;
 
@@ -519,8 +521,8 @@ export default class BasePopover extends Component<BasePopoverProps, BasePopover
                   arrowSize={arrowSize}
                   positionStyle={arrowPositionStyle}
                   elevation={elevation}
-                  borderWidth={this.props.popoverStyle.borderWidth}
-                  borderColor={this.props.popoverStyle.borderColor}
+                  borderWidth={borderWidth}
+                  borderColor={borderColor}
                 />
               }
             </Animated.View>
