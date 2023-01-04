@@ -519,6 +519,8 @@ export default class BasePopover extends Component<BasePopoverProps, BasePopover
                   arrowSize={arrowSize}
                   positionStyle={arrowPositionStyle}
                   elevation={elevation}
+                  borderWidth={this.props.popoverStyle.borderWidth}
+                  borderColor={this.props.popoverStyle.borderColor}
                 />
               }
             </Animated.View>

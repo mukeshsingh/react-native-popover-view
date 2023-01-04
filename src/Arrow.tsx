@@ -8,9 +8,11 @@ export type ArrowProps = {
     arrowSize: Size;
     positionStyle: Pick<ViewStyle, 'top' | 'bottom' | 'left' | 'right'>;
     elevation?: number;
+    borderWidth?: number;
+    borderColor?: ViewStyle['borderColor'];
 };
 const Arrow = React.forwardRef((props: ArrowProps, ref: ForwardedRef<View>): ReactElement => {
-  const { placement, color, arrowSize, positionStyle, elevation } = props;
+  const { placement, color, arrowSize, positionStyle, elevation, borderColor, borderWidth = 0 } = props;
 
   /*
    * Make width and height slightly bigger so that it overlaps popover to eliminate seem
@@ -40,7 +42,7 @@ const Arrow = React.forwardRef((props: ArrowProps, ref: ForwardedRef<View>): Rea
   const arrowInnerStyle: ViewStyle = {
     position: 'absolute',
     [placement]: 0,
-    borderBottomColor: color,
+    borderBottomColor: borderColor ?? color,
     borderRightColor: 'transparent',
     borderLeftColor: 'transparent',
     width,
@@ -50,17 +52,39 @@ const Arrow = React.forwardRef((props: ArrowProps, ref: ForwardedRef<View>): Rea
     borderLeftWidth: width / 2
   };
 
+  const arrowInnerStyle1: ViewStyle = {
+    ...arrowInnerStyle,
+    left: borderWidth,
+    borderBottomColor: color,
+    borderRightColor: 'transparent',
+    borderLeftColor: 'transparent',
+    width: width - (borderWidth * 2),
+    height: height * 2,
+    borderBottomWidth: height - (borderWidth * 2),
+    borderRightWidth: (width / 2) - borderWidth,
+    borderLeftWidth: (width / 2) - borderWidth
+  };
   // Rotate to show the triangle in different directions
   switch (placement) {
-    case Placement.TOP: arrowInnerStyle.transform = [{ rotateZ: '180deg' }]; break;
-    case Placement.LEFT: arrowInnerStyle.transform = [{ rotateZ: '90deg' }]; break;
-    case Placement.RIGHT: arrowInnerStyle.transform = [{ rotateZ: '270deg' }]; break;
+    case Placement.TOP:
+      arrowInnerStyle.transform = [{ rotateZ: '180deg' }];
+      arrowInnerStyle1.transform = [{ rotateZ: '180deg' }];
+      break;
+    case Placement.LEFT:
+      arrowInnerStyle.transform = [{ rotateZ: '90deg' }];
+      arrowInnerStyle1.transform = [{ rotateZ: '90deg' }];
+      break;
+    case Placement.RIGHT:
+      arrowInnerStyle.transform = [{ rotateZ: '270deg' }];
+      arrowInnerStyle1.transform = [{ rotateZ: '270deg' }];
+      break;
     default:
   }
 
   return (
     <View style={arrowOuterStyle} ref={ref}>
       <View style={arrowInnerStyle} />
+      <View style={arrowInnerStyle1} />
     </View>
   );
 });
